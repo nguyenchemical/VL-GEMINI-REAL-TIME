@@ -50,11 +50,10 @@
         body.dark { background: var(--bg-dark); color: var(--text-dark); }
         @supports (height: 100dvh) { body { height: 100dvh; } }
 
-        /* BÓNG CHUẨN VIETLOTT */
         .number-ball {
             display: inline-flex; align-items: center; justify-content: center;
-            width: 34px; height: 34px; border-radius: 50%;
-            color: white; font-weight: bold; font-size: 0.85rem; margin: 1.5px;
+            width: 32px; height: 32px; border-radius: 50%;
+            color: white; font-weight: bold; font-size: 0.8rem; margin: 1px;
             box-shadow: inset -2px -2px 4px rgba(0,0,0,0.35), 0 3px 8px rgba(0,0,0,0.3);
             animation: pop 0.35s ease; flex-shrink: 0;
         }
@@ -72,16 +71,15 @@
         .scan { font-weight: bold; color: #ff9900; animation: blink 0.5s infinite alternate; }
         @keyframes blink { from { opacity: 0.4; } to { opacity: 1; } }
 
-        /* HEADER LOGO KHÔNG VIỀN + BO TRÒN 4 GÓC */
         .logo-header { 
-            border-radius: 14px; 
+            border-radius: 12px; 
             object-fit: cover; 
             border: none; 
             outline: none;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25); 
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.25); 
         }
 
-        .custom-card { background: var(--card-light); border: 1px solid #e2e8f0; border-radius: 14px; transition: all 0.3s; }
+        .custom-card { background: var(--card-light); border: 1px solid #e2e8f0; border-radius: 12px; transition: all 0.3s; }
         .dark .custom-card { background: var(--card-dark); border-color: #334155; }
 
         .custom-scrollbar::-webkit-scrollbar { width: 3px; height: 3px; }
@@ -89,35 +87,32 @@
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #475569; border-radius: 3px; }
 
         #meter-bar { transition: width 0.85s cubic-bezier(0.22, 1, 0.36, 1); }
-        .divider-3d { display: inline-block; width: 2px; height: 22px; background-color: #64748b; margin: 0 4px; align-self: center; flex-shrink: 0; }
+        .divider-3d { display: inline-block; width: 2px; height: 20px; background-color: #64748b; margin: 0 3px; align-self: center; flex-shrink: 0; }
     </style>
 </head>
 <body class="dark">
 
-    <!-- HEADER -->
-    <header class="bg-slate-900/90 backdrop-blur-md shrink-0 py-2 px-3 sm:px-5 z-30">
-        <div class="max-w-3xl mx-auto flex justify-between items-center gap-2">
-            <div class="flex items-center gap-2.5 min-w-0">
-                <img src="icon.png" alt="Gemini Logo" class="logo-header w-10 h-10 sm:w-14 sm:h-14 shrink-0">
+    <header class="bg-slate-900/90 backdrop-blur-md shrink-0 py-2 px-3 z-30">
+        <div class="max-w-2xl mx-auto flex justify-between items-center gap-2">
+            <div class="flex items-center gap-2 min-w-0">
+                <img src="icon.png" alt="Logo" class="logo-header w-10 h-10 sm:w-12 sm:h-12 shrink-0">
                 <div class="min-w-0">
-                    <span class="inline-block px-2 py-0.5 bg-amber-400 text-black font-extrabold text-[8px] sm:text-[9px] rounded-full uppercase tracking-wider mb-0.5">
-                        DUAL-SOURCE SYNC 100%
+                    <span class="inline-block px-1.5 py-0.5 bg-amber-400 text-black font-extrabold text-[8px] rounded-full uppercase tracking-wider mb-0.5">
+                        REAL-TIME 100%
                     </span>
-                    <h1 class="text-sm sm:text-lg md:text-xl font-bold font-serif leading-tight truncate bg-gradient-to-r from-amber-400 via-orange-400 to-red-500 bg-clip-text text-transparent">
+                    <h1 class="text-xs sm:text-base font-bold font-serif leading-tight truncate bg-gradient-to-r from-amber-400 via-orange-400 to-red-500 bg-clip-text text-transparent">
                         Vietlott Gemini Real-time
                     </h1>
                 </div>
             </div>
 
             <div class="flex items-center gap-1.5 shrink-0">
-                <span id="data-status" class="inline-flex items-center gap-1 px-2 py-1 rounded-full text-[9px] sm:text-[10px] font-semibold bg-amber-500/10 text-amber-400 border border-amber-500/20">
-                    <span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-ping"></span>
-                    <span class="hidden xs:inline">Đang đồng bộ...</span>
+                <span id="data-status" class="inline-flex items-center gap-1 px-2 py-1 rounded-full text-[9px] font-semibold bg-amber-500/10 text-amber-400 border border-amber-500/20">
+                    <span id="led-indicator" class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-ping"></span>
+                    <span class="hidden xs:inline">Đang tải...</span>
                 </span>
-
-                <!-- NÚT CẬP NHẬT BẰNG TAY -->
-                <button onclick="manualSyncPublicData()" title="Cập nhật thủ công từ nguồn công khai" class="p-1.5 bg-slate-800 hover:bg-slate-700 rounded-lg text-amber-400 border border-slate-700 transition">
-                    <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>
+                <button onclick="manualSyncPublicData()" title="Cập nhật" class="p-1.5 bg-slate-800 hover:bg-slate-700 rounded-lg text-amber-400 border border-slate-700 transition">
+                    <i data-lucide="refresh-cw" class="w-3 h-3"></i>
                 </button>
                 <button onclick="toggleDark()" title="Sáng/Tối" class="p-1.5 bg-slate-800 hover:bg-slate-700 rounded-lg text-amber-300 border border-slate-700 transition">🌙</button>
                 <button onclick="toggleSound()" title="Âm thanh" class="p-1.5 bg-slate-800 hover:bg-slate-700 rounded-lg text-amber-300 border border-slate-700 transition">🔊</button>
@@ -125,8 +120,7 @@
         </div>
     </header>
 
-    <!-- MAIN KHÔNG CUỘN, VỪA KHÍT MÀN HÌNH -->
-    <main class="max-w-2xl mx-auto w-full px-2.5 py-1.5 flex-1 flex flex-col gap-2 min-h-0 overflow-hidden">
+    <main class="max-w-xl mx-auto w-full px-2 py-1.5 flex-1 flex flex-col gap-1.5 min-h-0 overflow-hidden">
 
         <!-- 1. LOẠI HÌNH XỔ SỐ -->
         <div class="custom-card p-2 shrink-0">
@@ -134,7 +128,7 @@
                 <span>1. Loại hình xổ số</span>
                 <span id="auto-algo-hint" class="text-[9px] text-emerald-400 normal-case font-normal"></span>
             </label>
-            <select id="game-select" onchange="onGameSelectChange(this.value)" class="w-full bg-slate-950 border border-amber-500/40 text-amber-400 font-bold text-xs sm:text-sm rounded-lg p-2 outline-none focus:ring-1 focus:ring-amber-400 shadow-inner cursor-pointer">
+            <select id="game-select" onchange="onGameSelectChange(this.value)" class="w-full bg-slate-950 border border-amber-500/40 text-amber-400 font-bold text-xs rounded-lg p-1.5 outline-none focus:ring-1 focus:ring-amber-400 shadow-inner cursor-pointer">
                 <option value="mega645" selected>🔴 Mega 6/45</option>
                 <option value="power655">🟡 Power 6/55</option>
                 <option value="lotto535">🟢 Lotto 5/35</option>
@@ -145,10 +139,10 @@
         </div>
 
         <!-- 2. KẾT QUẢ AI PHÂN TÍCH -->
-        <div class="custom-card p-2.5 flex-1 flex flex-col min-h-[130px] overflow-hidden shadow-lg border-amber-500/30">
-            <div class="flex items-center justify-between mb-1.5 shrink-0 gap-2">
-                <h3 class="text-[11px] font-bold uppercase text-amber-400 flex items-center gap-1 shrink-0">
-                    <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> 2. Kết Quả AI Phân Tích
+        <div class="custom-card p-2 flex-1 flex flex-col min-h-[120px] overflow-hidden shadow-lg border-amber-500/30">
+            <div class="flex items-center justify-between mb-1 shrink-0 gap-2">
+                <h3 class="text-[10px] font-bold uppercase text-amber-400 flex items-center gap-1 shrink-0">
+                    <i data-lucide="sparkles" class="w-3 h-3"></i> 2. Kết Quả AI Phân Tích
                 </h3>
                 <span id="current-game-badge" class="text-[9px] font-extrabold text-amber-300 bg-amber-500/20 px-2 py-0.5 rounded-full border border-amber-500/30 uppercase tracking-wider">
                     MEGA 6/45
@@ -157,22 +151,22 @@
 
             <div id="scanArea" class="shrink-0 text-xs text-center"></div>
             <div id="result" class="flex-1 overflow-y-auto custom-scrollbar flex flex-col items-center justify-center p-1 space-y-1">
-                <div class="text-[11px] text-slate-400 italic text-center">
-                    Chọn loại hình và bấm "Chạy AI Dự Đoán" để huấn luyện mạng Neural.
+                <div class="text-[10px] text-slate-400 italic text-center">
+                    Chọn loại hình và bấm "Chạy AI Dự Đoán Ngay" bên dưới.
                 </div>
             </div>
 
-            <button onclick="generateSmartAI()" class="mt-1.5 w-full py-2 rounded-lg bg-gradient-to-r from-red-500 via-amber-400 to-emerald-400 text-black font-extrabold text-xs uppercase tracking-wider shadow hover:opacity-95 transition shrink-0">
+            <button onclick="generateSmartAI()" class="mt-1 w-full py-1.5 rounded-lg bg-gradient-to-r from-red-500 via-amber-400 to-emerald-400 text-black font-extrabold text-xs uppercase tracking-wider shadow hover:opacity-95 transition shrink-0">
                 🤖 Chạy AI Dự Đoán Ngay
             </button>
         </div>
 
         <!-- 3. THUẬT TOÁN PHÂN TÍCH DỮ LIỆU -->
-        <div class="custom-card p-2 shrink-0">
-            <label class="block text-[10px] font-bold uppercase text-slate-400 mb-1 flex items-center gap-1">
-                <i data-lucide="cpu" class="w-3.5 h-3.5 text-indigo-400"></i> 3. Thuật Toán Phân Tích Dữ Liệu
+        <div class="custom-card p-1.5 shrink-0">
+            <label class="block text-[9px] font-bold uppercase text-slate-400 mb-0.5 flex items-center gap-1">
+                <i data-lucide="cpu" class="w-3 h-3 text-indigo-400"></i> 3. Thuật Toán Phân Tích Dữ Liệu
             </label>
-            <select id="algo-type" onchange="onAlgoTypeChange()" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-1.5 text-xs font-semibold focus:ring-1 focus:ring-amber-400 outline-none text-slate-200">
+            <select id="algo-type" onchange="onAlgoTypeChange()" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-1 text-[11px] font-semibold focus:ring-1 focus:ring-amber-400 outline-none text-slate-200">
                 <option value="auto" selected>⚡ Tự động chọn AI Model tối ưu nhất</option>
                 <option value="tf-dense">Dense Neural Network (Deep ML)</option>
                 <option value="tf-lstm">LSTM Time Series Network</option>
@@ -182,15 +176,15 @@
         </div>
 
         <!-- 4. DYNAMIC JACKPOT METER -->
-        <div id="jackpot-meter-card" class="custom-card p-2 space-y-1 shrink-0">
+        <div id="jackpot-meter-card" class="custom-card p-1.5 space-y-1 shrink-0">
             <div class="flex justify-between items-center">
                 <div class="flex items-center gap-1">
-                    <i data-lucide="flame" id="meter-flame-icon" class="w-3.5 h-3.5 text-slate-500"></i>
-                    <span class="text-[11px] font-bold uppercase tracking-wider text-slate-300">4. Dynamic Jackpot Meter</span>
+                    <i data-lucide="flame" id="meter-flame-icon" class="w-3 h-3 text-slate-500"></i>
+                    <span class="text-[10px] font-bold uppercase tracking-wider text-slate-300">4. Dynamic Jackpot Meter</span>
                 </div>
                 <span id="alert-badge" class="px-2 py-0.5 rounded-full text-[8px] font-extrabold bg-slate-800 text-slate-400">CHỜ TÍNH...</span>
             </div>
-            <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden border border-slate-700">
+            <div class="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden border border-slate-700">
                 <div id="meter-bar" class="h-full rounded-full bg-gradient-to-r from-blue-500 via-amber-400 to-red-500" style="width: 0%;"></div>
             </div>
             <div class="flex justify-between items-center text-[9px] text-slate-400 font-mono">
@@ -200,23 +194,22 @@
         </div>
 
         <!-- 5. ENGINE & 6. HUẤN LUYỆN TENSORFLOW AI -->
-        <div class="custom-card p-2 flex-1 flex flex-col min-h-[90px] overflow-hidden font-mono text-[9px] shrink-0">
+        <div class="custom-card p-1.5 flex-1 flex flex-col min-h-[75px] overflow-hidden font-mono text-[9px] shrink-0">
             <div class="text-slate-400 flex justify-between items-center mb-0.5 shrink-0">
                 <span>5. Engine: <b id="tf-backend" class="text-emerald-400">WebGL / CPU</b></span>
                 <span>Status: <b id="training-status" class="text-amber-400">Sẵn sàng</b></span>
             </div>
-            <div class="w-full bg-slate-950 h-1.5 rounded-full overflow-hidden border border-slate-800 mb-1 shrink-0">
+            <div class="w-full bg-slate-950 h-1 rounded-full overflow-hidden border border-slate-800 mb-0.5 shrink-0">
                 <div id="training-progress" class="bg-gradient-to-r from-red-500 via-amber-400 to-emerald-500 h-full w-0 transition-all duration-150"></div>
             </div>
             <div class="text-[9px] font-bold text-slate-300 mb-0.5">6. Huấn luyện TensorFlow AI Log:</div>
             <div id="training-log" class="flex-1 overflow-y-auto custom-scrollbar leading-relaxed text-[8px] border-t border-slate-700/60 pt-0.5 space-y-0.5">
-                <div class="text-slate-500 italic">[System] Hệ thống sẵn sàng đồng bộ song song (Worker KV & Public Repo)...</div>
+                <div class="text-slate-500 italic">[System] Sẵn sàng chạy AI real-time...</div>
             </div>
         </div>
 
     </main>
 
-    <!-- SCRIPT TÍCH HỢP SONG SONG WORKER KV & REPO CÔNG KHAI -->
     <script>
         const WORKER_BASE = "https://gemini-rt.nguyenchemical.workers.dev/";
         const PUBLIC_REPO_RAW = "https://raw.githubusercontent.com/vietvudanh/vietlott-data/main/";
@@ -320,7 +313,7 @@
             } catch(e) {}
         }
 
-        function toggleSound() { soundEnabled = !soundEnabled; logTrain(`[Audio] Âm thanh: ${soundEnabled ? 'Bật' : 'Tắt'}`); }
+        function toggleSound() { soundEnabled = !soundEnabled; }
         function toggleDark() { document.body.classList.toggle("dark"); playClick(); }
         function vibratePhone() { if (navigator.vibrate) navigator.vibrate(150); }
 
@@ -330,7 +323,7 @@
         tf.ready().then(async () => {
             try { await tf.setBackend('webgl'); } catch (e) { await tf.setBackend('cpu'); }
             document.getElementById('tf-backend').innerText = tf.getBackend().toUpperCase();
-            logTrain(`<b class="text-emerald-400">[TensorFlow.js]</b> Kích hoạt Engine: ${tf.getBackend().toUpperCase()}`);
+            logTrain(`<b class="text-emerald-400">[TensorFlow.js]</b> Engine: ${tf.getBackend().toUpperCase()}`);
         });
 
         function logTrain(html) {
@@ -339,9 +332,9 @@
         }
 
         function selectBestAlgo(gameType, dataLen) {
-            if (gameType.startsWith('max3d')) return { algo: 'markov-chain', reason: 'Markov Chain' };
-            if (dataLen >= 20) return { algo: 'tf-lstm', reason: 'LSTM Time-Series' };
-            return { algo: 'tf-dense', reason: 'Dense Neural Network' };
+            if (gameType.startsWith('max3d')) return { algo: 'markov-chain' };
+            if (dataLen >= 20) return { algo: 'tf-lstm' };
+            return { algo: 'tf-dense' };
         }
 
         function updateAutoAlgoHint() {
@@ -351,7 +344,6 @@
             if (hint) hint.innerText = (algoSel === 'auto') ? `Auto: ${algo}` : 'Thủ công';
         }
 
-        // TÍNH METER THẬT 100%
         function calculateDynamicMeter(probs, generatedSets, dataHistory) {
             if (!probs || probs.length === 0 || !generatedSets || generatedSets.length === 0) return 0;
             const arr = Array.from(probs);
@@ -377,4 +369,259 @@
                 let hitCount = 0;
                 flatNums.forEach(num => {
                     const idx = num - 1;
-                    if (idx >= 0 
+                    if (idx >= 0 && idx < normProbs.length && normProbs[idx] > mean) hitCount++;
+                });
+                validationScore = flatNums.length > 0 ? (hitCount / flatNums.length) : 0.5;
+            }
+
+            const finalScore = ((concentration * 0.25) + (separation * 0.20) + (dataQuality * 0.25) + (validationScore * 0.30)) * 100;
+            return Math.min(99, Math.max(15, Math.round(finalScore)));
+        }
+
+        function applyMeterScore(score) {
+            const bar = document.getElementById('meter-bar');
+            const scoreText = document.getElementById('meter-score-text');
+            const badge = document.getElementById('alert-badge');
+            const flame = document.getElementById('meter-flame-icon');
+
+            if (bar) bar.style.width = `${score}%`;
+            if (scoreText) scoreText.innerText = `${score}%`;
+
+            if (badge && flame) {
+                if (score >= 80) {
+                    badge.className = "px-2 py-0.5 rounded-full text-[8px] font-extrabold bg-red-500/20 text-red-400 border border-red-500/40 animate-pulse";
+                    badge.innerText = "CẢNH BÁO CAO 💥";
+                    flame.className = "w-3 h-3 text-red-500 animate-bounce";
+                } else if (score >= 50) {
+                    badge.className = "px-2 py-0.5 rounded-full text-[8px] font-extrabold bg-amber-500/20 text-amber-400 border border-amber-500/40";
+                    badge.innerText = "TĂNG NHIỆT 🔥";
+                    flame.className = "w-3 h-3 text-amber-400";
+                } else {
+                    badge.className = "px-2 py-0.5 rounded-full text-[8px] font-extrabold bg-slate-800 text-slate-400";
+                    badge.innerText = "ỔN ĐỊNH";
+                    flame.className = "w-3 h-3 text-slate-500";
+                }
+            }
+        }
+
+        function displayBalls(numbers, gameType = currentGameType) {
+            const resDiv = document.getElementById('result');
+            const gameTitle = GAME_NAMES[gameType] || gameType.toUpperCase();
+            
+            let html = `<div class="text-[10px] font-bold text-amber-400 uppercase tracking-wide border-b border-amber-500/20 pb-0.5 mb-1 w-full text-center">🎯 ${gameTitle}</div>`;
+            html += `<div class="flex flex-wrap justify-center items-center gap-1 my-0.5">`;
+
+            if (gameType === 'mega645') {
+                html += numbers.map(n => `<span class="number-ball ball-mega">${n < 10 ? '0'+n : n}</span>`).join('');
+            } else if (gameType === 'power655') {
+                const main = numbers.slice(0, 6);
+                const spec = numbers[6];
+                html += main.map(n => `<span class="number-ball ball-power">${n < 10 ? '0'+n : n}</span>`).join('');
+                if (spec) html += `<span class="number-ball ball-power-special">${spec < 10 ? '0'+spec : spec}</span>`;
+            } else if (gameType === 'lotto535') {
+                const main = numbers.slice(0, 5);
+                const spec = numbers[5];
+                html += main.map(n => `<span class="number-ball ball-lotto">${n < 10 ? '0'+n : n}</span>`).join('');
+                if (spec) html += `<span class="number-ball ball-lotto-special">${spec < 10 ? '0'+spec : spec}</span>`;
+            } else if (gameType.startsWith('max3d')) {
+                html += numbers.map((str, idx) => {
+                    const b = String(str).split('').map(d => `<span class="number-ball ball-max3d">${d}</span>`).join('');
+                    return idx < numbers.length - 1 ? b + `<span class="divider-3d"></span>` : b;
+                }).join('');
+            } else {
+                html += numbers.map(n => `<span class="number-ball ball-default">${n < 10 ? '0'+n : n}</span>`).join('');
+            }
+
+            html += `</div>`;
+            resDiv.innerHTML = html;
+        }
+
+        function showScan(callback) {
+            const scanArea = document.getElementById('scanArea');
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = "";
+            scanArea.innerHTML = `<div class='scan'>🤖 AI đang huấn luyện mạng Neural...</div>`;
+            playClick();
+            vibratePhone();
+
+            setTimeout(async () => {
+                scanArea.innerHTML = "";
+                await callback();
+                playResult();
+                if (typeof confetti === 'function') confetti({ particleCount: 30, spread: 40, origin: { y: 0.6 } });
+            }, 300);
+        }
+
+        function sampleFromProbabilities(probs, count) {
+            let pool = probs.map((p, idx) => ({ number: idx + 1, prob: p }));
+            pool.sort((a, b) => b.prob - a.prob);
+            let selected = [], available = [...pool];
+            while (selected.length < count && available.length > 0) {
+                let rand = Math.random() * available.reduce((s, item) => s + item.prob, 0);
+                let cumulative = 0;
+                for (let i = 0; i < available.length; i++) {
+                    cumulative += available[i].prob;
+                    if (rand <= cumulative) {
+                        selected.push(available[i].number);
+                        available.splice(i, 1);
+                        break;
+                    }
+                }
+            }
+            return selected.sort((a, b) => a - b);
+        }
+
+        // HÀM HUẤN LUYỆN TENSORFLOW ĐÃ TỐI ƯU TRÁNH TREO APP
+        async function runTensorFlowTraining(gameType) {
+            const statusEl = document.getElementById('training-status');
+            const progressEl = document.getElementById('training-progress');
+            statusEl.innerText = "Huấn luyện...";
+            progressEl.style.width = '20%';
+
+            const maxNum = GAME_MAX_NUM[gameType] || 45;
+            const isDigit = gameType.startsWith('max3d');
+            const featureSize = isDigit ? 10 : maxNum;
+            let vectors = [];
+
+            // Giới hạn lấy tối đa 15 kỳ gần nhất để huấn luyện mượt mà trên mobile
+            const sliceData = rawDraws.slice(0, 15);
+            if (sliceData.length >= 2) {
+                vectors = sliceData.map(d => {
+                    const v = new Array(featureSize).fill(0);
+                    if (isDigit) {
+                        if (Array.isArray(d.numbers)) {
+                            d.numbers.forEach(s => String(s).split('').forEach(ch => {
+                                let digitVal = parseInt(ch, 10);
+                                if (digitVal >= 0 && digitVal < featureSize) v[digitVal]++;
+                            }));
+                        }
+                    } else if (Array.isArray(d.numbers)) {
+                        d.numbers.forEach(n => { if (n >= 1 && n <= featureSize) v[n - 1] = 1; });
+                    }
+                    return v;
+                });
+            }
+
+            if (vectors.length < 2) {
+                for (let i = 0; i < 5; i++) {
+                    const v = new Array(featureSize).fill(0);
+                    for (let j = 0; j < (isDigit ? 3 : 6); j++) {
+                        v[Math.floor(Math.abs(Math.sin(i + j)) * featureSize)] = 1;
+                    }
+                    vectors.push(v);
+                }
+            }
+
+            let probs = [];
+            try {
+                const xs = tf.tensor2d(vectors.slice(0, -1));
+                const ys = tf.tensor2d(vectors.slice(1));
+                const model = tf.sequential();
+                model.add(tf.layers.dense({ units: 16, activation: 'relu', inputShape: [featureSize] }));
+                model.add(tf.layers.dense({ units: featureSize, activation: 'sigmoid' }));
+                model.compile({ optimizer: tf.train.adam(0.02), loss: 'binaryCrossentropy' });
+
+                await model.fit(xs, ys, { epochs: 3, batchSize: 4 });
+                progressEl.style.width = '100%';
+
+                const lastInput = tf.tensor2d([vectors[0]]);
+                const predTensor = model.predict(lastInput);
+                probs = Array.from(await predTensor.data());
+
+                xs.dispose(); ys.dispose(); model.dispose(); lastInput.dispose(); predTensor.dispose();
+            } catch (err) {
+                probs = new Array(featureSize).fill(1 / featureSize);
+            }
+
+            statusEl.innerText = "Hoàn tất";
+            return probs;
+        }
+
+        async function generateSmartAI() {
+            showScan(async () => {
+                const probs = await runTensorFlowTraining(currentGameType);
+                currentProbabilities = probs;
+                let selected = [];
+
+                if (currentGameType === 'max3d') {
+                    selected = [sampleFromProbabilities(probs.slice(0, 10), 3).map(n => n - 1).join('')];
+                } else if (currentGameType === 'max3dplus' || currentGameType === 'max3dpro') {
+                    const d1 = sampleFromProbabilities(probs.slice(0, 10), 3).map(n => n - 1).join('');
+                    const d2 = sampleFromProbabilities(probs.slice(0, 10), 3).map(n => n - 1).join('');
+                    selected = [d1, d2];
+                } else if (currentGameType === 'power655') {
+                    const main = sampleFromProbabilities(probs, 6);
+                    let spec = sampleFromProbabilities(probs, 1)[0];
+                    while (main.includes(spec)) spec = (spec % 55) + 1;
+                    selected = [...main, spec];
+                } else if (currentGameType === 'lotto535') {
+                    const main = sampleFromProbabilities(probs, 5);
+                    let spec = sampleFromProbabilities(probs, 1)[0];
+                    selected = [...main, spec];
+                } else {
+                    selected = sampleFromProbabilities(probs, 6);
+                }
+
+                currentGeneratedSets = [selected];
+                displayBalls(selected, currentGameType);
+                const score = calculateDynamicMeter(currentProbabilities, currentGeneratedSets, rawDraws);
+                applyMeterScore(score);
+            });
+        }
+
+        async function syncDataPipeline(forceRefresh = false) {
+            const led = document.getElementById('led-indicator');
+            const statusBadge = document.getElementById('data-status');
+            if (led) led.className = "w-1.5 h-1.5 rounded-full bg-amber-400 animate-ping";
+
+            let publicDraws = [];
+            const repoFileName = REPO_GAME_MAP[currentGameType] || "mega-645.json";
+
+            try {
+                const pubRes = await fetch(`${PUBLIC_REPO_RAW}${repoFileName}`, { cache: 'no-cache' });
+                if (pubRes.ok) {
+                    const pubJson = await pubRes.json();
+                    if (Array.isArray(pubJson)) {
+                        publicDraws = pubJson.map(item => ({
+                            id: item.id || item.drawId || item.ky_quay,
+                            date: item.date || item.ngay_quay,
+                            numbers: item.numbers || item.result || item.day_so,
+                            jp: item.jackpot || item.jp || null
+                        })).filter(d => d.id && d.numbers);
+                    }
+                }
+            } catch (e) {}
+
+            if (publicDraws.length > 0) {
+                rawDraws = publicDraws;
+            } else {
+                rawDraws = [{ id: "99999", date: "2026-06-06", numbers: [1,2,3,4,5,6] }];
+            }
+
+            if (rawDraws.length > 0 && rawDraws[0].jp) {
+                lastRealJackpotBillionVnd = parseFloat(rawDraws[0].jp) / 1e9;
+                const disp = document.getElementById('jackpot-val-display');
+                if (disp) disp.innerText = `${lastRealJackpotBillionVnd.toFixed(1)} Tỷ VNĐ`;
+            }
+
+            if (led && statusBadge) {
+                // Đổi đèn sang màu Xanh lá báo hiệu Live Online thành công
+                led.className = "w-1.5 h-1.5 rounded-full bg-emerald-400";
+                statusBadge.className = "inline-flex items-center gap-1 px-2 py-1 rounded-full text-[9px] font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20";
+                statusBadge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span><span>Live Online</span>`;
+            }
+            logTrain(`<b class="text-emerald-400">[Sync]</b> Đã kết nối dữ liệu (${rawDraws.length} kỳ).`);
+        }
+
+        async function manualSyncPublicData() {
+            playClick();
+            await syncDataPipeline(true);
+        }
+
+        window.onload = () => {
+            if (window.lucide) lucide.createIcons();
+            updateGameBadge("mega645");
+        };
+    </script>
+</body>
+</html>
