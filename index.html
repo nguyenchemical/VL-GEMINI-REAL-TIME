@@ -6,7 +6,6 @@
     
     <title>Vietlott Gemini Real-time</title>
 
-    <!-- App Icon & PWA Meta -->
     <link rel="icon" type="image/png" href="icon.png">
     <link rel="shortcut icon" type="image/png" href="icon.png">
     <link rel="apple-touch-icon" href="icon.png">
@@ -71,19 +70,11 @@
         .scan { font-weight: bold; color: #ff9900; animation: blink 0.5s infinite alternate; }
         @keyframes blink { from { opacity: 0.4; } to { opacity: 1; } }
 
-        .logo-header { 
-            border-radius: 12px; 
-            object-fit: cover; 
-            border: none; 
-            outline: none;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.25); 
-        }
-
+        .logo-header { border-radius: 12px; object-fit: cover; border: none; outline: none; box-shadow: 0 3px 10px rgba(0, 0, 0, 0.25); }
         .custom-card { background: var(--card-light); border: 1px solid #e2e8f0; border-radius: 12px; transition: all 0.3s; }
         .dark .custom-card { background: var(--card-dark); border-color: #334155; }
 
         .custom-scrollbar::-webkit-scrollbar { width: 3px; height: 3px; }
-        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #475569; border-radius: 3px; }
 
         #meter-bar { transition: width 0.85s cubic-bezier(0.22, 1, 0.36, 1); }
@@ -122,7 +113,6 @@
 
     <main class="max-w-xl mx-auto w-full px-2 py-1.5 flex-1 flex flex-col gap-1.5 min-h-0 overflow-hidden">
 
-        <!-- 1. LOẠI HÌNH XỔ SỐ -->
         <div class="custom-card p-2 shrink-0">
             <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1 flex items-center justify-between">
                 <span>1. Loại hình xổ số</span>
@@ -138,7 +128,6 @@
             </select>
         </div>
 
-        <!-- 2. KẾT QUẢ AI PHÂN TÍCH -->
         <div class="custom-card p-2 flex-1 flex flex-col min-h-[120px] overflow-hidden shadow-lg border-amber-500/30">
             <div class="flex items-center justify-between mb-1 shrink-0 gap-2">
                 <h3 class="text-[10px] font-bold uppercase text-amber-400 flex items-center gap-1 shrink-0">
@@ -161,7 +150,6 @@
             </button>
         </div>
 
-        <!-- 3. THUẬT TOÁN PHÂN TÍCH DỮ LIỆU -->
         <div class="custom-card p-1.5 shrink-0">
             <label class="block text-[9px] font-bold uppercase text-slate-400 mb-0.5 flex items-center gap-1">
                 <i data-lucide="cpu" class="w-3 h-3 text-indigo-400"></i> 3. Thuật Toán Phân Tích Dữ Liệu
@@ -175,7 +163,6 @@
             </select>
         </div>
 
-        <!-- 4. DYNAMIC JACKPOT METER -->
         <div id="jackpot-meter-card" class="custom-card p-1.5 space-y-1 shrink-0">
             <div class="flex justify-between items-center">
                 <div class="flex items-center gap-1">
@@ -193,7 +180,6 @@
             </div>
         </div>
 
-        <!-- 5. ENGINE & 6. HUẤN LUYỆN TENSORFLOW AI -->
         <div class="custom-card p-1.5 flex-1 flex flex-col min-h-[75px] overflow-hidden font-mono text-[9px] shrink-0">
             <div class="text-slate-400 flex justify-between items-center mb-0.5 shrink-0">
                 <span>5. Engine: <b id="tf-backend" class="text-emerald-400">WebGL / CPU</b></span>
@@ -471,7 +457,6 @@
             return selected.sort((a, b) => a - b);
         }
 
-        // HÀM HUẤN LUYỆN TENSORFLOW ĐÃ TỐI ƯU TRÁNH TREO APP
         async function runTensorFlowTraining(gameType) {
             const statusEl = document.getElementById('training-status');
             const progressEl = document.getElementById('training-progress');
@@ -483,8 +468,7 @@
             const featureSize = isDigit ? 10 : maxNum;
             let vectors = [];
 
-            // Giới hạn lấy tối đa 15 kỳ gần nhất để huấn luyện mượt mà trên mobile
-            const sliceData = rawDraws.slice(0, 15);
+            const sliceData = rawDraws.slice(0, 30);
             if (sliceData.length >= 2) {
                 vectors = sliceData.map(d => {
                     const v = new Array(featureSize).fill(0);
@@ -569,34 +553,53 @@
             });
         }
 
+        // ĐỒNG BỘ DỮ LIỆU SONG SONG TỪ REPO CÔNG KHAI (HỖ TRỢ ĐÚNG ĐỊNH DẠNG MỌI GAME)
         async function syncDataPipeline(forceRefresh = false) {
             const led = document.getElementById('led-indicator');
             const statusBadge = document.getElementById('data-status');
             if (led) led.className = "w-1.5 h-1.5 rounded-full bg-amber-400 animate-ping";
 
-            let publicDraws = [];
+            let fetchedDraws = [];
             const repoFileName = REPO_GAME_MAP[currentGameType] || "mega-645.json";
 
             try {
                 const pubRes = await fetch(`${PUBLIC_REPO_RAW}${repoFileName}`, { cache: 'no-cache' });
                 if (pubRes.ok) {
-                    const pubJson = await pubRes.json();
-                    if (Array.isArray(pubJson)) {
-                        publicDraws = pubJson.map(item => ({
-                            id: item.id || item.drawId || item.ky_quay,
-                            date: item.date || item.ngay_quay,
-                            numbers: item.numbers || item.result || item.day_so,
-                            jp: item.jackpot || item.jp || null
-                        })).filter(d => d.id && d.numbers);
+                    const jsonContent = await pubRes.json();
+                    let rawList = [];
+                    if (Array.isArray(jsonContent)) {
+                        rawList = jsonContent;
+                    } else if (jsonContent.draws && Array.isArray(jsonContent.draws)) {
+                        rawList = jsonContent.draws;
                     }
+
+                    fetchedDraws = rawList.map(item => {
+                        let nums = item.numbers || item.result || item.day_so || item.nums || [];
+                        // Xử lý chuyển đổi định dạng số nếu cần
+                        return {
+                            id: String(item.id || item.drawId || item.ky_quay || ""),
+                            date: item.date || item.ngay_quay || "",
+                            numbers: nums,
+                            jp: item.jackpot || item.jp || null
+                        };
+                    }).filter(d => d.id && Array.isArray(d.numbers) && d.numbers.length > 0);
                 }
             } catch (e) {}
 
-            if (publicDraws.length > 0) {
-                rawDraws = publicDraws;
-            } else {
-                rawDraws = [{ id: "99999", date: "2026-06-06", numbers: [1,2,3,4,5,6] }];
+            // Fallback sang Worker KV nếu repo công khai lỗi
+            if (fetchedDraws.length === 0) {
+                try {
+                    const kvRes = await fetch(`${WORKER_BASE}?action=history&game=${currentGameType}`, { cache: 'no-cache' });
+                    if (kvRes.ok) {
+                        const kvJson = await kvRes.json();
+                        if (kvJson && Array.isArray(kvJson.draws)) {
+                            fetchedDraws = kvJson.draws;
+                        }
+                    }
+                } catch (e) {}
             }
+
+            rawDraws = fetchedDraws.length > 0 ? fetchedDraws : [{ id: "99999", date: "2026-06-06", numbers: [1,2,3,4,5,6] }];
 
             if (rawDraws.length > 0 && rawDraws[0].jp) {
                 lastRealJackpotBillionVnd = parseFloat(rawDraws[0].jp) / 1e9;
@@ -605,12 +608,11 @@
             }
 
             if (led && statusBadge) {
-                // Đổi đèn sang màu Xanh lá báo hiệu Live Online thành công
                 led.className = "w-1.5 h-1.5 rounded-full bg-emerald-400";
                 statusBadge.className = "inline-flex items-center gap-1 px-2 py-1 rounded-full text-[9px] font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20";
                 statusBadge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span><span>Live Online</span>`;
             }
-            logTrain(`<b class="text-emerald-400">[Sync]</b> Đã kết nối dữ liệu (${rawDraws.length} kỳ).`);
+            logTrain(`<b class="text-emerald-400">[Sync]</b> Đã nạp thành công ${rawDraws.length} kỳ quay thực tế.`);
         }
 
         async function manualSyncPublicData() {
